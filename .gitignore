@@ -1,1 +1,7 @@
 .Rproj.user
+.RData
+.Rproj
+
+.Rbuildignore
+
+.gitignore
