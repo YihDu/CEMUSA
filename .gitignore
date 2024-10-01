@@ -6,4 +6,4 @@ SGD.Rproj
 .Rbuildignore
 .Rdata
 .httr-oauth
-._pkgdown
+_pkgdown.yml
