@@ -3,7 +3,7 @@ Title: A clustering evaluation metric for spatial transcriptomics
 Version: 0.1.0-beta
 Authors@R: 
     person("Yihang", "Du", , "yihdu04@163.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0009-0001-8753-7091" , GitHub = "YihDu"))
+           comment = c(ORCID = "0009-0001-8753-7091"))
 Description: This package provide a clustering evaluation metric for spatial transcriptomics
 License: GPL
 Encoding: UTF-8
