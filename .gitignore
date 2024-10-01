@@ -4,3 +4,8 @@ SGD.Rproj
 .Rhistory
 
 .Rbuildignore
+docs
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto

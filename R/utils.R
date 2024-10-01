@@ -15,3 +15,5 @@ calculate_anomaly_weight <- function(graph, severity_levels) {
     igraph::E(graph)[u %--% v]$anomaly_severity_weight <- severity
   }
 }
+
+# match function
