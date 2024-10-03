@@ -7,3 +7,8 @@ SGD.Rproj
 .Rdata
 .httr-oauth
 _pkgdown.yml
+
+Data/
+clustering_metrics.R
+temp.ipynb
+test.ipynb
