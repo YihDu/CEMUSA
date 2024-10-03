@@ -1,4 +1,3 @@
-# 计算Jaccard系数
 jaccard_coefficient <- function(cluster1, cluster2) {
   if (length(cluster1) > 0 & length(cluster2) > 0) {
     intersection_counts <- length(intersect(cluster1, cluster2))
@@ -9,7 +8,6 @@ jaccard_coefficient <- function(cluster1, cluster2) {
   }
 }
 
-# 获取聚类标签及其对应的索引
 get_clusters_from_labels <- function(labels) {
   clusters <- split(1:length(labels), labels)
   cluster_values <- lapply(clusters, function(x) as.integer(x))
@@ -17,7 +15,6 @@ get_clusters_from_labels <- function(labels) {
   return(list(cluster_values, cluster_keys))
 }
 
-# 重新分配聚类
 reassign_clusters <- function(predicted_clusters, true_clusters, matching) {
   reassigned_clusters <- vector("list", length(true_clusters))
   for (pred_index in names(matching)) {
@@ -27,7 +24,6 @@ reassign_clusters <- function(predicted_clusters, true_clusters, matching) {
   return(reassigned_clusters)
 }
 
-# 匈牙利算法匹配聚类
 match_clusters <- function(predicted_clusters, true_clusters) {
   jaccard_matrix <- matrix(0, nrow = length(predicted_clusters), ncol = length(true_clusters))
   for (i in 1:length(predicted_clusters)) {
@@ -40,7 +36,6 @@ match_clusters <- function(predicted_clusters, true_clusters) {
   return(as.list(matching))
 }
 
-# 重新分配标签
 reassign_labels <- function(pred_labels, matching, pred_clusters, true_labels_keys) {
   adjusted_labels <- pred_labels
   for (pred_index in names(matching)) {
@@ -53,7 +48,6 @@ reassign_labels <- function(pred_labels, matching, pred_clusters, true_labels_ke
   return(adjusted_labels)
 }
 
-# 主函数
 label_matching <- function(dataframe, pred_col_name) {
   true_labels <- dataframe$labels
   pred_labels <- dataframe[[pred_col_name]]
