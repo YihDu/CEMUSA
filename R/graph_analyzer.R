@@ -1,5 +1,10 @@
-library(MASS)
 get_edge_attributes <- function(graph, apply_gene_similarity, apply_anomaly_severity_weight, apply_distance_weight, unique_groups) {
+  # group to one-hot
+#   example:group_to_onehot <- list(
+#   A = c(1, 0, 0),
+#   B = c(0, 1, 0),
+#   C = c(0, 0, 1)
+# )
 
   group_to_onehot <- setNames(lapply(unique_groups, function(group) {
       as.numeric(unique_groups == group)
@@ -16,6 +21,7 @@ get_edge_attributes <- function(graph, apply_gene_similarity, apply_anomaly_seve
     group_u <- igraph::V(graph)[u]$label
     group_v <- igraph::V(graph)[v]$label
 
+    # same group non-zero encoding
     if (group_u == group_v) {
       encoding <- group_to_onehot[[group_u]]
       
@@ -43,39 +49,19 @@ get_edge_attributes <- function(graph, apply_gene_similarity, apply_anomaly_seve
     samples <- append(samples, list(as.numeric(encoding)))
   }
   
-  result <- do.call(rbind, samples)
-  return(result)
+  # to a matrix: (number of edge) * (encoding dim)
+  samples <- do.call(rbind, samples)
+  return(samples)
 }
 
 fit_kde_and_sample <- function(samples, num_samples, sample_times, bandwidth = NULL, random_seed = NULL) {
   if (!is.null(random_seed)) set.seed(random_seed)
-  
-  kde <- kde2d(samples[, 1], samples[, 2], n = num_samples, h = bandwidth)
-  
-  z_flat <- as.vector(kde$z)
-  pdf <- z_flat / sum(z_flat)  
-
-  cdf <- cumsum(pdf)
-  
+  kde <- kde(x = samples_matrix, h = bandwidth)
   samples_set <- list()
-  
-  x_coords <- rep(kde$x, each = length(kde$y))
-  y_coords <- rep(kde$y, times = length(kde$x))
-  
-  for (i in seq_len(sample_times)) {
-    sampled_indices <- findInterval(runif(num_samples), cdf)
-    
-    sampled_x <- x_coords[sampled_indices]
-    sampled_y <- y_coords[sampled_indices]
-    
-    sampled <- cbind(sampled_x, sampled_y)
-    
-    sampled <- pmax(pmin(sampled, 1), 0)
-    
-    samples_set <- append(samples_set, list(sampled))
+  for (i in seq_len(sample_times)){
+  sampled_points <- rkde(n = num_samples, fhat = kde)
+  samples_set <- append(samples_set, list(sampled_points))
   }
-  print("samples_set:")
-  print(samples_set)
   return(samples_set)
 }
 
@@ -90,7 +76,9 @@ analyze_graph <- function(truth_graph, pred_graph) {
   apply_gene_similarity <- FALSE
   apply_anomaly_severity_weight <- FALSE
   apply_distance_weight <- FALSE
-  sample_times <- 1
+  
+  # sample times
+  sample_times <- 4
   
   unique_groups <- get_unique_groups(truth_graph, pred_graph)
   

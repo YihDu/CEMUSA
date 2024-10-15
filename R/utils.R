@@ -4,7 +4,6 @@
 calculate_anomaly_weight <- function(graph, dict_severity_levels) {
   severity_mapping <- setNames(sapply(dict_severity_levels, function(x) x$severity_level), 
                                sapply(dict_severity_levels, function(x) x$name))
-  
   if (ecount(graph) == 0) {
     stop("Graph contains no edges.")
   }
@@ -35,9 +34,7 @@ calculate_anomaly_weight <- function(graph, dict_severity_levels) {
   }
 }
 
-
 # 2.gene similarity weight
-
 calculate_pearson_similarity <- function(x, y) {
   vx <- x - mean(x)
   vy <- y - mean(y)

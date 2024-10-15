@@ -1,9 +1,11 @@
+# build KNN graph and add coordinates/label
+# igraph package?
 build_graph <- function(label_data, coordinate_data, num_neighbors = 6) {
   graph <- igraph::make_empty_graph(n = nrow(coordinate_data), directed = FALSE)
   for (i in seq_len(nrow(coordinate_data))) {
     igraph::V(graph)$pos[i] <- list(as.numeric(coordinate_data[i, ]))
   }
-  igraph::V(graph)$label <- label_data
+  igraph::V(graph)$label <- label_data  # vector
   nbrs <- RANN::nn2(coordinate_data, k = num_neighbors + 1)
   for (i in seq_len(nrow(nbrs$nn.idx))) {
     for (n in nbrs$nn.idx[i, -1]) {
@@ -12,6 +14,7 @@ build_graph <- function(label_data, coordinate_data, num_neighbors = 6) {
   }
   return(graph)
 }
+
 
 copy_weights <- function(truth_graph, pred_graph) {
   for (i in seq_along(E(truth_graph))) {
@@ -46,11 +49,10 @@ copy_weights <- function(truth_graph, pred_graph) {
 }
 
 
+process_graph <- function(true_labels, cluster_labels , coordinate_data , params) {
 
-process_graph <- function(true_labels, cluster_labels , spatial_coordinates , params) {
-
-  truth_graph <- build_graph(true_labels, spatial_coordinates, num_neighbors = 6)
-  pred_graph <- build_graph(cluster_labels, spatial_coordinates, num_neighbors = 6)
+  truth_graph <- build_graph(true_labels, coordinate_data)
+  pred_graph <- build_graph(cluster_labels, coordinate_data)
   
   if (params$apply_anomaly_severity_weight) {
     message("Applying anomaly severity weight when building graphs.")
