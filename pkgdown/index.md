@@ -1,10 +1,11 @@
 ---
-title: "Spatial Grouping Discrepancy (SGD)"
-output: html_document
+title: "About"
+template: home
 ---
 
+# SGD: A evaluation metric for Spatial Transcriptomics data
 
-# Installation
+## Installation
 
 To install the package from GitHub, use the following command:
 
@@ -16,7 +17,7 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 devtools::install_github("YihDu/SGD")
 ```
 
-# Spatial Grouping Discrepancy (SGD)
+## Spatial Grouping Discrepancy (SGD)
 
 SGD provides a unbiased clustering evaluation metric for spatial transcriptomics data. 
 It accounts for the label agreement between the clustering results and the ground truth, spatial label distribution, and the mislabel severity simultaneously.
@@ -39,7 +40,7 @@ A matrix or data frame that contains the spatial or positional coordinates of th
 - **params** : list (optional)
 A list of additional parameters that control the behavior of the function. 
 
-# Example Usage
+## Example Usage
 
 ```r
 # Example code here
