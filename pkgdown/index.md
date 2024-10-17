@@ -5,6 +5,9 @@ template: home
 
 # SGD: A evaluation metric for Spatial Transcriptomics data
 
+`SGD` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
+locations, and error severity simultaneously.
+
 ## Installation
 
 To install the package from GitHub, use the following command:

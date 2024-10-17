@@ -1,8 +1,9 @@
 pandoc: 3.1.2
 pkgdown: 2.1.1
 pkgdown_sha: ~
-articles: {}
-last_built: 2024-10-16T05:23Z
+articles:
+  Reference: Reference.html
+last_built: 2024-10-17T03:24Z
 urls:
   reference: https://yihdu.github.io/SGD/reference
   article: https://yihdu.github.io/SGD/articles
