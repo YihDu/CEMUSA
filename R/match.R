@@ -48,10 +48,7 @@ reassign_labels <- function(pred_labels, matching, pred_clusters, true_labels_ke
   return(adjusted_labels)
 }
 
-label_matching <- function(dataframe, pred_col_name) {
-  true_labels <- dataframe$labels
-  pred_labels <- dataframe[[pred_col_name]]
-  
+matching_function <- function(true_labels, pred_labels) {
   clusters_info_true <- get_clusters_from_labels(true_labels)
   true_clusters <- clusters_info_true[[1]]
   true_labels_keys <- clusters_info_true[[2]]
@@ -62,6 +59,5 @@ label_matching <- function(dataframe, pred_col_name) {
   matching <- match_clusters(pred_clusters, true_clusters)
   adjusted_labels <- reassign_labels(pred_labels, matching, pred_clusters, true_labels_keys)
   
-  dataframe$matched_label <- adjusted_labels
-  return(dataframe[, c("matched_label")])
+  return (adjusted_labels)
 }
