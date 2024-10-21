@@ -35,12 +35,20 @@ calculate_anomaly_weight <- function(graph, dict_severity_levels) {
 }
 
 # 2.gene similarity weight
+
+# For same label assign Similarity to Ground Truth edge and copy
+# sim  
+# different
+# 1-sim
+
+# pearson similarity
 calculate_pearson_similarity <- function(x, y) {
   vx <- x - mean(x)
   vy <- y - mean(y)
   return(sum(vx * vy) / (sqrt(sum(vx ^ 2)) * sqrt(sum(vy ^ 2))))
 }
 
+# gene similarity
 calculate_gene_similarity <- function(graph, anndata, is_preprocessed = TRUE) {
   if (!is_preprocessed) {
     preprocessed_data <- preprocess_anndata(anndata)
@@ -71,18 +79,20 @@ calculate_gene_similarity <- function(graph, anndata, is_preprocessed = TRUE) {
   pearson_matrix <- cor(gene_expression_matrix)
   
   for (edge in E(graph)) {
-    u <- ends(graph, edge)[1]
-    v <- ends(graph, edge)[2]
+    endpoints <- ends(graph, edge)
+    u <- endpoints[1]
+    v <- endpoints[2]
     
     group_u <- V(graph)$group[u]
     group_v <- V(graph)$group[v]
-    
+
     if (group_u == group_v) {
       group_mean <- group_means[[group_u]]
       similarity_u <- calculate_pearson_similarity(gene_expression_matrix[u, ], group_mean)
       similarity_v <- calculate_pearson_similarity(gene_expression_matrix[v, ], group_mean)
       E(graph)[edge]$gene_similarity_weight <- 0.5 * (similarity_u + similarity_v)
-    } else {
+    } 
+    else {
       E(graph)[edge]$gene_similarity_weight <- 1 - pearson_matrix[u, v]
     }
     

@@ -56,12 +56,12 @@ process_graph <- function(true_labels, cluster_labels , coordinate_data , params
   
   if (params$apply_anomaly_severity_weight) {
     message("Applying anomaly severity weight when building graphs.")
-    calculate_anomaly_weight(truth_graph, params$severity_levels)
+    calculate_anomaly_weight(truth_graph, params$severity_weight_dict)
   }
 
   if (params$apply_gene_similarity) {
     message("Applying gene similarity weight when building graphs.") 
-    calculate_gene_similarity(truth_graph, params$gene_expression_matrix)
+    calculate_gene_similarity(truth_graph, params$gene_exp_matrix)
   }
   copy_weights(truth_graph , pred_graph)
   return(list(truth_graph = truth_graph, pred_graph = pred_graph))
