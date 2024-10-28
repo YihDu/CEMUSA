@@ -2,7 +2,6 @@ export(SGD)
 
 import(igraph)
 import(RANN)
-import(dplyr)
 import(reticulate)
 import(doParallel)
 import(foreach)

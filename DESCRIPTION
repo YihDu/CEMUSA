@@ -7,7 +7,6 @@ Authors@R:
 Description: This package provide a clustering evaluation metric for spatial transcriptomics
 Imports:
     igraph,
-    dplyr,
     RANN,
     doParallel,
     reticulate,
