@@ -28,8 +28,6 @@ calculate_anomaly_weight <- function(graph, dict_severity_levels) {
     severity_v <- severity_mapping[group_v]
     
     anomaly_severity_weight <- (severity_u + severity_v) / 2
-    print(paste('Anomaly Severity Weight:', anomaly_severity_weight))
-    
     set_edge_attr(graph, "anomaly_severity_weight", index = i, value = anomaly_severity_weight)
   }
 }
@@ -42,60 +40,54 @@ calculate_anomaly_weight <- function(graph, dict_severity_levels) {
 # 1-sim
 
 # pearson similarity
+# 计算基因相似度
+# 计算皮尔逊相似度
+# 计算皮尔逊相似度的函数
 calculate_pearson_similarity <- function(x, y) {
-  vx <- x - mean(x)
-  vy <- y - mean(y)
-  return(sum(vx * vy) / (sqrt(sum(vx ^ 2)) * sqrt(sum(vy ^ 2))))
+  cor(x, y, use = "complete.obs")
 }
 
-# gene similarity
-calculate_gene_similarity <- function(graph, anndata, is_preprocessed = TRUE) {
-  if (!is_preprocessed) {
-    preprocessed_data <- preprocess_anndata(anndata)
-    gene_expression_matrix <- preprocessed_data[, preprocessed_data@var$highly_variable]
-  } else {
-    gene_expression_matrix <- anndata@X
-  }
-  
-  gene_expression_matrix <- as.matrix(gene_expression_matrix)
-  
-  group_means <- list()
-  group_indices <- list()
-  
-  for (i in seq_len(vcount(graph))) {
-    group <- V(graph)$group[i]
-    if (!group %in% names(group_indices)) {
-      group_indices[[group]] <- c()
-    }
-    group_indices[[group]] <- c(group_indices[[group]], i)
-  }
-  
-  for (group in names(group_indices)) {
-    group_expression_matrix <- gene_expression_matrix[group_indices[[group]], ]
-    group_mean_vector <- colMeans(group_expression_matrix)
-    group_means[[group]] <- group_mean_vector
-  }
-  
-  pearson_matrix <- cor(gene_expression_matrix)
-  
-  for (edge in E(graph)) {
-    endpoints <- ends(graph, edge)
-    u <- endpoints[1]
-    v <- endpoints[2]
-    
-    group_u <- V(graph)$group[u]
-    group_v <- V(graph)$group[v]
+calculate_gene_similarity <- function(graph, GeneExpMatrix) {
+  cat("开始计算Gene similarity\n")
+  flush.console()  
 
-    if (group_u == group_v) {
-      group_mean <- group_means[[group_u]]
-      similarity_u <- calculate_pearson_similarity(gene_expression_matrix[u, ], group_mean)
-      similarity_v <- calculate_pearson_similarity(gene_expression_matrix[v, ], group_mean)
-      E(graph)[edge]$gene_similarity_weight <- 0.5 * (similarity_u + similarity_v)
-    } 
-    else {
-      E(graph)[edge]$gene_similarity_weight <- 1 - pearson_matrix[u, v]
+  gene_expression_matrix <- GeneExpMatrix
+
+  # 使用 split 优化索引构建，并确保 V(graph)$label 中的每个元素都有对应的索引
+  time_split <- system.time({
+    group_indices <- split(seq_len(nrow(gene_expression_matrix)), V(graph)$label)
+    group_means <- lapply(group_indices, function(indices) {
+      colMeans(gene_expression_matrix[indices, ], na.rm = TRUE)  # 添加na.rm以处理缺失值
+    })
+  })
+  cat('计算组均值时间:', time_split['elapsed'], '秒\n')
+  flush.console()
+
+  # 获取所有边的端点
+  time_ends <- system.time({
+    endpoints <- ends(graph, E(graph), names = FALSE)
+  })
+  cat('获取边端点时间:', time_ends['elapsed'], '秒\n')
+  flush.console()
+
+  # 遍历图中的每条边
+  time_loop <- system.time({
+    for (i in seq_along(E(graph))) {
+      u <- endpoints[i, 1]
+      v <- endpoints[i, 2]
+      group_u <- V(graph)$label[u]
+      group_v <- V(graph)$label[v]
+
+      if (group_u == group_v) {
+        group_mean <- group_means[[group_u]]
+        similarity_u <- calculate_pearson_similarity(gene_expression_matrix[u, ], group_mean)
+        similarity_v <- calculate_pearson_similarity(gene_expression_matrix[v, ], group_mean)
+        E(graph)[i]$gene_similarity_weight <- 0.5 * (similarity_u + similarity_v)
+      } else {
+        E(graph)[i]$gene_similarity_weight <- 1 - calculate_pearson_similarity(gene_expression_matrix[u, ], gene_expression_matrix[v, ])
+      }
     }
-    
-    print(paste('Gene Similarity Weight:', E(graph)[edge]$gene_similarity_weight))
-  }
+  })
+  cat('遍历边并计算相似度时间:', time_loop['elapsed'], '秒\n')
+  flush.console()
 }

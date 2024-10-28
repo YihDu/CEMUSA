@@ -3,7 +3,6 @@ SGD <- function(
   cluster_labels , 
   spatial_coordinates,
   match_cluster_labels = FALSE,
-
   params = list()
 ){
   params <- modifyList(list(
@@ -13,15 +12,37 @@ SGD <- function(
       severity_weight_dict = NULL,
       AD_weight = 0.7,
       sigma = 1e-2), params)
+  
   # using match function
   if (match_cluster_labels) {
-    cluster_labels <- matching_function(true_labels , cluster_labels)
+    time_match <- system.time({
+      cluster_labels <- matching_function(true_labels , cluster_labels)
+    })
+    cat('匹配标签时间:', time_match['elapsed'], '秒\n')
+    flush.console()
   }
+  
+  time_build_graph <- system.time({
+    graph_list <- process_graph(true_labels, cluster_labels, spatial_coordinates , params)
+  })
+  cat('构建图时间:', time_build_graph['elapsed'], '秒\n')
+  flush.console()
 
-  graph_list <- process_graph(true_labels, cluster_labels, spatial_coordinates , params)
-  result <- analyze_graph(graph_list$truth_graph, graph_list$pred_graph)
-  cat("result$sample_set_truth type and shape:", typeof(result$samples_set_truth), "  ", length(result$samples_set_truth), '\n')
-  cat("result$sample_set_pred type and shape:", typeof(result$samples_set_pred), "  ", length(result$samples_set_pred), '\n')
-  mmd_value <- compute_mmd(result$samples_set_truth, result$samples_set_pred, sigma = 1)
-  return(mmd_value)
+  
+  time_analysis <- system.time({
+    result <- analyze_graph(graph_list$truth_graph, graph_list$pred_graph)
+  })
+  cat('分析图时间:', time_analysis['elapsed'], '秒\n')
+  
+  cl <- makeCluster(detectCores() - 1)
+  registerDoParallel(cl)  
+  time_mmd <- system.time({
+    mmd_value <- compute_mmd(result$samples_set_truth, result$samples_set_pred, sigma = params$sigma)
+  })
+  cat('计算MMD时间:', time_mmd['elapsed'], '秒\n')
+  
+  stopCluster(cl)
+
+  # print
+  cat('SGD:', mmd_value, '\n')
 }

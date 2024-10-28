@@ -8,7 +8,10 @@ Description: This package provide a clustering evaluation metric for spatial tra
 Imports:
     igraph,
     MASS,
-    ks
+    ks,
+    clue,
+    doParallel,
+    foreach
 License: GPL-3
 Encoding: UTF-8
 URL: https://yihdu.github.io/SGD
