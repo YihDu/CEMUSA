@@ -84,25 +84,22 @@ fit_kde_and_sample <- function(samples, num_samples, sample_times, bandwidth = N
   sklearn <- import("sklearn.neighbors")
   np <- import("numpy")
   
-  # 将 R 的数据转换为 Python 格式
   samples_py <- r_to_py(as.matrix(samples))
   dim <- ncol(samples)
-  # 创建并拟合 KDE 模型
   kde <- sklearn$KernelDensity(kernel = "gaussian", bandwidth = bandwidth)
   kde$fit(samples_py)
   
-  # 初始化样本集合
+
   samples_set <- array(NA, dim = c(sample_times, num_samples, dim))
-  
-  # 采样
+
   for (i in seq_len(sample_times)) {
-    # 使用 kde$sample() 生成样本
+
     sampled <- kde$sample(n_samples = as.integer(num_samples), random_state = as.integer(random_seed + i))
     
-    # 将样本裁剪在 [0, 1] 范围内
+
     sampled <- np$clip(sampled, 0, 1)
     
-    # 将采样结果转换回 R 格式，并保存
+
     samples_set[i, , ] <- py_to_r(sampled)
   }
   
@@ -121,7 +118,6 @@ analyze_graph <- function(truth_graph, pred_graph) {
   apply_anomaly_severity_weight <- FALSE
   apply_distance_weight <- FALSE
   
-  # sample times
   sample_times <- 4
   
   unique_groups <- get_unique_groups(truth_graph, pred_graph)
@@ -130,15 +126,12 @@ analyze_graph <- function(truth_graph, pred_graph) {
   samples_pred <- get_edge_attributes(pred_graph, apply_gene_similarity, apply_anomaly_severity_weight, apply_distance_weight, unique_groups)
   num_samples <- nrow(samples_truth)
 
-
-  # 打印形状
   cat("samples_truth shape:", dim(samples_truth), '\n')
   cat("samples_pred shape:", dim(samples_pred), '\n')
 
   samples_set_truth <- fit_kde_and_sample(samples_truth, num_samples, sample_times, bandwidth = 0.1, random_seed = 42)
   samples_set_pred <- fit_kde_and_sample(samples_pred, num_samples, sample_times, bandwidth = 0.1, random_seed = 42)
   
-  # 打印形状
   cat("samples_set_truth shape:", dim(samples_set_truth), '\n')
   cat("samples_set_pred shape:", dim(samples_set_pred), '\n')
   return(list(samples_set_truth = samples_set_truth, samples_set_pred = samples_set_pred))

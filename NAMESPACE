@@ -1,8 +1,8 @@
 export(SGD)
 
 import(igraph)
-import(MASS)
-import(ks)
-import(clue)
+import(RANN)
+import(dplyr)
+import(reticulate)
 import(doParallel)
 import(foreach)

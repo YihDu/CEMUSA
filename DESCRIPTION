@@ -7,10 +7,10 @@ Authors@R:
 Description: This package provide a clustering evaluation metric for spatial transcriptomics
 Imports:
     igraph,
-    MASS,
-    ks,
-    clue,
+    dplyr,
+    RANN,
     doParallel,
+    reticulate,
     foreach
 License: GPL-3
 Encoding: UTF-8
