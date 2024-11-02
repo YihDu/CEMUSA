@@ -1,16 +1,12 @@
-get_edge_attributes <- function(graph, apply_gene_similarity, apply_anomaly_severity_weight, apply_distance_weight, unique_groups) {
-  # group to one-hot
-#   example:group_to_onehot <- list(
-#   A = c(1, 0, 0),
-#   B = c(0, 1, 0),
-#   C = c(0, 0, 1)
-# )
-
+get_edge_attributes <- function(graph, 
+                                apply_gene_similarity, 
+                                apply_anomaly_severity_weight, 
+                                apply_distance_weight, 
+                                unique_groups) {
   group_to_onehot <- setNames(lapply(unique_groups, function(group) {
       as.numeric(unique_groups == group)
     }), unique_groups)
   
-  # print("group_to_onehot:", group_to_onehot)
   cat("unique_groups:", unique_groups , "\n")
 
   samples <- list()
@@ -52,33 +48,6 @@ get_edge_attributes <- function(graph, apply_gene_similarity, apply_anomaly_seve
   return(samples)
 }
 
-# fit_kde_and_sample <- function(samples, num_samples, sample_times, bandwidth = NULL, random_seed = NULL) {
-#   if (!is.null(random_seed)) set.seed(random_seed)
-  
-#   # 拟合 KDE
-#   cat('开始拟合KDE...\n')
-#   flush.console()
-#   # 计算时间
-#   time_kde <- system.time({
-#     kde <- kde(x = samples, h = bandwidth , binned = TRUE)
-#   })
-#   cat('拟合KDE时间:', time_kde['elapsed'], '秒\n')
-#   flush.console()
-  
-#   # 获取样本的维度
-#   dim <- ncol(samples)
-  
-#   # 初始化多维数组
-#   samples_set <- array(NA, dim = c(sample_times, num_samples, dim))
-  
-#   # 采样
-#   for (i in seq_len(sample_times)) {
-#     sampled_points <- rkde(n = num_samples, fhat = kde)
-#     samples_set[i, , ] <- sampled_points
-#   }
-  
-#   return(samples_set)
-# }
 
 fit_kde_and_sample <- function(samples, num_samples, sample_times, bandwidth = NULL, random_seed = NULL) {
   sklearn <- import("sklearn.neighbors")
@@ -88,21 +57,12 @@ fit_kde_and_sample <- function(samples, num_samples, sample_times, bandwidth = N
   dim <- ncol(samples)
   kde <- sklearn$KernelDensity(kernel = "gaussian", bandwidth = bandwidth)
   kde$fit(samples_py)
-  
-
   samples_set <- array(NA, dim = c(sample_times, num_samples, dim))
-
   for (i in seq_len(sample_times)) {
-
     sampled <- kde$sample(n_samples = as.integer(num_samples), random_state = as.integer(random_seed + i))
-    
-
     sampled <- np$clip(sampled, 0, 1)
-    
-
     samples_set[i, , ] <- py_to_r(sampled)
   }
-  
   return(samples_set)
 }
 
@@ -133,6 +93,12 @@ analyze_graph <- function(truth_graph, pred_graph) {
   samples_set_pred <- fit_kde_and_sample(samples_pred, num_samples, sample_times, bandwidth = 0.1, random_seed = 42)
   
   cat("samples_set_truth shape:", dim(samples_set_truth), '\n')
+  # print(samples_set_truth[1, , ])
+
   cat("samples_set_pred shape:", dim(samples_set_pred), '\n')
+  # print(samples_set_pred[1, , ])
+
   return(list(samples_set_truth = samples_set_truth, samples_set_pred = samples_set_pred))
 }
+
+

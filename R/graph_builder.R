@@ -1,7 +1,7 @@
 build_graph <- function(label_data, coordinate_data, num_neighbors = 6) {
-  nbrs <- nn2(coordinate_data, k = num_neighbors + 1)  
+  nbrs <- nn2(coordinate_data, k = num_neighbors + 1) 
   sources <- rep(seq_len(nrow(nbrs$nn.idx)), each = num_neighbors)
-  targets <- as.vector(t(nbrs$nn.idx[, -1]))  # 去掉自身的索引并展平
+  targets <- as.vector(t(nbrs$nn.idx[, -1]))
   edge_list <- c(rbind(sources, targets))
 
   graph <- make_graph(edge_list, directed = FALSE) %>% simplify()
@@ -11,7 +11,6 @@ build_graph <- function(label_data, coordinate_data, num_neighbors = 6) {
 
   return(graph)
 }
-
 
 copy_weights <- function(truth_graph, pred_graph) {
   truth_gene_weights <- edge_attr(truth_graph, "gene_similarity_weight", E(truth_graph))
@@ -27,7 +26,6 @@ copy_weights <- function(truth_graph, pred_graph) {
   
   return(pred_graph)
 }
-
 
 process_graph <- function(true_labels, cluster_labels , coordinate_data , params) {
 
