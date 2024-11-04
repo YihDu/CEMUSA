@@ -30,7 +30,7 @@ SGD <- function(
 
   
   time_analysis <- system.time({
-    result <- analyze_graph(graph_list$truth_graph, graph_list$pred_graph)
+    result <- analyze_graph(graph_list$truth_graph, graph_list$pred_graph , params)
   })
   cat('分析图时间:', time_analysis['elapsed'], '秒\n')
   

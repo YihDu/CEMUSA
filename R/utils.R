@@ -47,17 +47,16 @@ calculate_pearson_similarity <- function(x, y) {
   cor(x, y, use = "complete.obs")
 }
 
-calculate_gene_similarity <- function(graph, GeneExpMatrix) {
+# 计算基因相似度
+calculate_gene_similarity <- function(graph, gene_expression_matrix) {
   cat("开始计算Gene similarity\n")
   flush.console()  
-
-  gene_expression_matrix <- GeneExpMatrix
 
   # 使用 split 优化索引构建，并确保 V(graph)$label 中的每个元素都有对应的索引
   time_split <- system.time({
     group_indices <- split(seq_len(nrow(gene_expression_matrix)), V(graph)$label)
     group_means <- lapply(group_indices, function(indices) {
-      colMeans(gene_expression_matrix[indices, ], na.rm = TRUE)  # 添加na.rm以处理缺失值
+      colMeans(gene_expression_matrix[indices, ], na.rm = TRUE)
     })
   })
   cat('计算组均值时间:', time_split['elapsed'], '秒\n')
@@ -72,22 +71,29 @@ calculate_gene_similarity <- function(graph, GeneExpMatrix) {
 
   # 遍历图中的每条边
   time_loop <- system.time({
-    for (i in seq_along(E(graph))) {
-      u <- endpoints[i, 1]
-      v <- endpoints[i, 2]
-      group_u <- V(graph)$label[u]
-      group_v <- V(graph)$label[v]
+    for (edge in igraph::E(graph)) {
+      u <- igraph::tail_of(graph, edge)
+      v <- igraph::head_of(graph, edge)
+      group_u <- igraph::V(graph)[u]$label
+      group_v <- igraph::V(graph)[v]$label
 
       if (group_u == group_v) {
         group_mean <- group_means[[group_u]]
         similarity_u <- calculate_pearson_similarity(gene_expression_matrix[u, ], group_mean)
         similarity_v <- calculate_pearson_similarity(gene_expression_matrix[v, ], group_mean)
-        E(graph)[i]$gene_similarity_weight <- 0.5 * (similarity_u + similarity_v)
+        # graph <- set_edge_attr(graph, "gene_similarity_weight", edge, 0.5 * (similarity_u + similarity_v))
+        # graph <- set_edge_attr(graph, "gene_similarity_weight", edge, 1)
+        graph <- set_edge_attr(graph, "gene_similarity_weight", edge, 1 - calculate_pearson_similarity(gene_expression_matrix[u, ], gene_expression_matrix[v, ]))
       } else {
-        E(graph)[i]$gene_similarity_weight <- 1 - calculate_pearson_similarity(gene_expression_matrix[u, ], gene_expression_matrix[v, ])
+        graph <- set_edge_attr(graph, "gene_similarity_weight", edge, 1 - calculate_pearson_similarity(gene_expression_matrix[u, ], gene_expression_matrix[v, ]))
       }
+
+      # 打印出来数值
+      cat("这条边的gene Similarity weight:", edge_attr(graph, "gene_similarity_weight", edge), "\n")
     }
   })
   cat('遍历边并计算相似度时间:', time_loop['elapsed'], '秒\n')
   flush.console()
+
+  return (graph)
 }

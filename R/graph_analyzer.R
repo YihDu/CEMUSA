@@ -1,8 +1,6 @@
 get_edge_attributes <- function(graph, 
-                                apply_gene_similarity, 
-                                apply_anomaly_severity_weight, 
-                                apply_distance_weight, 
-                                unique_groups) {
+                                unique_groups,
+                                params) {
   group_to_onehot <- setNames(lapply(unique_groups, function(group) {
       as.numeric(unique_groups == group)
     }), unique_groups)
@@ -25,19 +23,27 @@ get_edge_attributes <- function(graph,
       encoding <- rep(0, length(unique_groups))
     }
     
-    if (apply_gene_similarity) {
-      gene_similarity_weight <- igraph::edge_attr(graph, "gene_similarity_weight", edge)
+    if (params$apply_gene_similarity) {
+      # 先判断是否有这个属性
+
+
+      gene_similarity_weight <- edge_attr(graph, "gene_similarity_weight", edge)
+
+      # 检查 gene_similarity_weight 是否为 NULL
+      if (is.null(gene_similarity_weight) || length(gene_similarity_weight) == 0) {
+        cat("这条edge没有gene Similarity weight: No weight\n")
+      } else {
+        cat("这条edge的gene Similarity weight:", gene_similarity_weight, "\n")
+      }
+      
+
+      # gene_similarity_weight <- igraph::edge_attr(graph, "gene_similarity_weight", edge)
       encoding <- encoding * ifelse(is.na(gene_similarity_weight), 1.0, gene_similarity_weight)
     }
     
-    if (apply_anomaly_severity_weight) {
+    if (params$apply_anomaly_severity_weight) {
       anomaly_severity_weight <- igraph::edge_attr(graph, "anomaly_severity_weight", edge)
       encoding <- encoding * ifelse(is.na(anomaly_severity_weight), 1.0, anomaly_severity_weight)
-    }
-    
-    if (apply_distance_weight) {
-      distance_weight <- igraph::edge_attr(graph, "distance_weight", edge)
-      encoding <- encoding * ifelse(is.na(distance_weight), 1.0, distance_weight)
     }
     
     samples <- append(samples, list(as.numeric(encoding)))
@@ -73,21 +79,20 @@ get_unique_groups <- function(truth_graph, pred_graph) {
   return(unique_groups)
 }
 
-analyze_graph <- function(truth_graph, pred_graph) {
-  apply_gene_similarity <- FALSE
-  apply_anomaly_severity_weight <- FALSE
-  apply_distance_weight <- FALSE
-  
+analyze_graph <- function(truth_graph, pred_graph , params) {
+
   sample_times <- 4
   
   unique_groups <- get_unique_groups(truth_graph, pred_graph)
   
-  samples_truth <- get_edge_attributes(truth_graph, apply_gene_similarity, apply_anomaly_severity_weight, apply_distance_weight, unique_groups)
-  samples_pred <- get_edge_attributes(pred_graph, apply_gene_similarity, apply_anomaly_severity_weight, apply_distance_weight, unique_groups)
+  samples_truth <- get_edge_attributes(truth_graph, unique_groups , params)
+  samples_pred <- get_edge_attributes(pred_graph, unique_groups , params)
   num_samples <- nrow(samples_truth)
 
   cat("samples_truth shape:", dim(samples_truth), '\n')
+  cat("samples_truth" , samples_truth, '\n')
   cat("samples_pred shape:", dim(samples_pred), '\n')
+  cat("samples_pred" , samples_pred, '\n')
 
   samples_set_truth <- fit_kde_and_sample(samples_truth, num_samples, sample_times, bandwidth = 0.1, random_seed = 42)
   samples_set_pred <- fit_kde_and_sample(samples_pred, num_samples, sample_times, bandwidth = 0.1, random_seed = 42)
