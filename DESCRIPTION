@@ -1,8 +1,8 @@
 Package: SAS
 Title: A clustering evaluation metric for spatial transcriptomics
-Version: 0.1.0
+Version: 1.1.0
 Authors@R: 
-    person("Yihang", "Du", , "yihdu04@163.com", role = c("aut", "cre"),
+    person("Yihang", "Du", , "yih_du@163.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0001-8753-7091"))
 Description: This package provide a clustering evaluation metric for spatial transcriptomics
 Imports:
@@ -14,7 +14,7 @@ Imports:
     clue
 License: GPL-3
 Encoding: UTF-8
-URL: https://yihdu.github.io/SGD
-BugReports: https://github.com/YihDu/SGD/issues
+URL: https://yihdu.github.io/SAS
+BugReports: https://github.com/YihDu/SAS/issues
 
 

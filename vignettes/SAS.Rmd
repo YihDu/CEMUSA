@@ -1,10 +1,15 @@
 ---
-title: "User Guide of SAS package"
-shorttitle : "SAS guide"
+title: "Doc"
+shorttitle: "SAS guide"
 author: 
-    - Yihang Du, yih_du@163.com
-    - Jiaying Hu
+  - Yihang Du, yih_du@163.com
+  - Jiaying Hu
 package: SAS
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{User Guide of SAS package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction
