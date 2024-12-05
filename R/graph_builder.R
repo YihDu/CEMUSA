@@ -1,3 +1,6 @@
+# Given the true labels, cluster labels, and the coordinates of the data points 
+# This module builds the graphs for the ground truth and clustering results
+
 build_graph <- function(label_data, coordinate_data, num_neighbors = 6) {
   nbrs <- nn2(coordinate_data, k = num_neighbors + 1) 
   sources <- rep(seq_len(nrow(nbrs$nn.idx)), each = num_neighbors)
@@ -19,7 +22,6 @@ copy_weights <- function(truth_graph, pred_graph) {
   if ("gene_similarity_weight" %in% edge_attr_names(truth_graph)) {
     pred_graph <- set_edge_attr(pred_graph, "gene_similarity_weight", value = truth_gene_weights)
   }
-  
   if ("anomaly_severity_weight" %in% edge_attr_names(truth_graph)) {
     pred_graph <- set_edge_attr(pred_graph, "anomaly_severity_weight", value = truth_anomaly_weights)
   }
@@ -28,7 +30,6 @@ copy_weights <- function(truth_graph, pred_graph) {
 }
 
 process_graph <- function(true_labels, cluster_labels , coordinate_data , params) {
-
   truth_graph <- build_graph(true_labels, coordinate_data)
   pred_graph <- build_graph(cluster_labels, coordinate_data)
   
@@ -41,14 +42,9 @@ process_graph <- function(true_labels, cluster_labels , coordinate_data , params
     message("Applying gene similarity weight when building graphs.") 
     truth_graph <- calculate_gene_similarity(truth_graph, params$gene_exp_matrix)
   }
-
   if (params$apply_anomaly_severity_weight || params$apply_gene_similarity) {
     pred_graph <- copy_weights(truth_graph , pred_graph)
   }
-  cat('------------------')
-  cat('打印点1')
-  print(edge_attr(truth_graph, "gene_similarity_weight", E(truth_graph)))
-  print(edge_attr(pred_graph, "gene_similarity_weight", E(pred_graph)))
   return(list(truth_graph = truth_graph, pred_graph = pred_graph))
   }
 

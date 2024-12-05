@@ -10,7 +10,8 @@ Imports:
     RANN,
     doParallel,
     reticulate,
-    foreach
+    foreach,
+    clue
 License: GPL-3
 Encoding: UTF-8
 URL: https://yihdu.github.io/SGD
