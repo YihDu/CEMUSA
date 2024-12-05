@@ -1,6 +1,6 @@
-# SGD: **S**patial **G**rouping **D**iscrepancy
+# SAS: **S**patial **A**lignment **S**core
 
-`SGD` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
+`SAS` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
 locations, and error severity simultaneously.
 
 ## Installation
@@ -9,13 +9,13 @@ locations, and error severity simultaneously.
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("YihDu/SGD")
+devtools::install_github("YihDu/SAS")
 ```
 
 ### 2. Load the package
 ```r
-library(SGD)
+library(SAS)
 ```
 
-## How to use `SGD`
+## How to use `SAS`
 Please refer to the [documentation](https://yihdu.github.io/SGD/) for details.

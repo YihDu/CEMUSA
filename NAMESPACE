@@ -1,4 +1,4 @@
-export(SGD)
+export(SAS)
 
 import(clue)
 import(igraph)
