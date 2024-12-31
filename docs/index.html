@@ -114,12 +114,14 @@
 </h2>
 <ul>
 <li><p><code>true_label</code> :<br>
-Ground truth class labels to be used as a reference.</p></li>
-<li><p><code>cluster_labels</code> : Cluster labels to evaluate.</p></li>
-<li><p><code>spatial_coordinates</code> : A matrix or data frame containing the spatial coordinates (e.g., <code>x</code>, <code>y</code>) of each data point.</p></li>
-<li><p><code>match_cluster_labels</code> : (default = TRUE)<br>
-If <code>TRUE</code>, the function will attempt to match the <code>cluster_labels</code> with the <code>true_labels</code> using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).</p></li>
-<li><p><code>params</code> : list (optional)<br>
+A vector containing the ground truth labels, used as a reference.</p></li>
+<li><p><code>cluster_labels</code> :<br>
+A vector containing the cluster labels to be evaluated.</p></li>
+<li><p><code>spatial_coordinates</code> :<br>
+A matrix or data frame containing the spatial coordinates (e.g., <code>x</code>, <code>y</code>) of each data point.</p></li>
+<li><p><code>match_cluster_labels</code> : (default = <code>TRUE</code>)<br>
+A boolean value..If <code>TRUE</code>, the function will attempt to match the <code>cluster_labels</code> with the <code>true_labels</code> using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).</p></li>
+<li><p><code>params</code> : (optional)<br>
 A list of additional parameters that control more detailed aspects of the evaluation.</p></li>
 </ul>
 </div>

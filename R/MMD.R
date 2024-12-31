@@ -9,7 +9,7 @@ GaussianEMDKernelMultiScale <- function(distances, sigmas) {
 }
 
 # kernel matrix computation
-compute_kernel_matrix_multi_scale <- function(samples1, samples2, sigmas = c(0.01)) {
+compute_kernel_matrix_multi_scale <- function(samples1, samples2, sigmas = c(0.1)) {
   
   sample_times <- length(samples1)
   K_values <- foreach(i = 1:sample_times, .combine = 'rbind', .export = c("GaussianEMDKernelMultiScale", "swdist")) %dopar% {
@@ -28,20 +28,16 @@ compute_kernel_matrix_multi_scale <- function(samples1, samples2, sigmas = c(0.0
 }
 
 # MMD Computation
-compute_mmd_multi_scale_fixed <- function(samples1, samples2, sigmas = c(0.01 , 0.1 , 0.5), nproj = 50) {  
+# hBC 0.2
+# MERFISH 0.1
+# DLPFC 0.05 / c(0.05 , 0.1 ,0.5)
+
+# general + simulate
+# c(0.05 , 0.1 ,0.5)
+compute_mmd_multi_scale_fixed <- function(samples1, samples2, sigmas = c(0.1), nproj = 50) {  
   K_XX <- compute_kernel_matrix_multi_scale(samples1, samples1, sigmas)
   K_YY <- compute_kernel_matrix_multi_scale(samples2, samples2, sigmas)
   K_XY <- compute_kernel_matrix_multi_scale(samples1, samples2, sigmas)
-
-  cat('K_XX:')
-  print(K_XX)
-  cat('----------------')
-  cat('K_YY:')
-  print(K_YY)
-  cat('----------------')
-  cat('K_XY:')
-  print(K_XY)
-  
   m <- length(samples1)
   n <- length(samples2)
   mmd <- (sum(K_XX) / (m * m)) + (sum(K_YY) / (n * n)) - (2 * sum(K_XY) / (m * n))

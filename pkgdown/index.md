@@ -30,18 +30,18 @@ SAS(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels = TR
 
 ## Parameters
 - `true_label` :  
-  Ground truth class labels to be used as a reference.
+  A vector containing the ground truth labels, used as a reference.
 
-- `cluster_labels` : 
-  Cluster labels to evaluate.
+- `cluster_labels` :   
+  A vector containing the cluster labels to be evaluated.
 
-- `spatial_coordinates` : 
+- `spatial_coordinates` :   
   A matrix or data frame containing the spatial coordinates (e.g., `x`, `y`) of each data point.
 
-- `match_cluster_labels` : (default = TRUE)  
-  If `TRUE`, the function will attempt to match the   `cluster_labels`  with the `true_labels` using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).
+- `match_cluster_labels` : (default =  `TRUE`)    
+  A boolean value..If `TRUE`, the function  will attempt to match the `cluster_labels` with the `true_labels` using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).
 
-- `params` : list (optional)  
+- `params` : (optional)   
   A list of additional parameters that control more detailed aspects of the evaluation.
 
 ## Returns:

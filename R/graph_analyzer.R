@@ -1,44 +1,44 @@
-get_edge_attributes <- function(graph, 
-                                unique_groups,
-                                params) {
+get_edge_attributes <- function(graph, unique_groups, params) {
+  node_labels <- igraph::V(graph)$label
+  edge_list <- igraph::as_edgelist(graph)
+  gene_similarity_weights <- igraph::edge_attr(graph, "gene_similarity_weight")
+  anomaly_severity_weights <- igraph::edge_attr(graph, "anomaly_severity_weight")
+  
   group_to_onehot <- setNames(lapply(unique_groups, function(group) {
-      as.numeric(unique_groups == group)
-    }), unique_groups)
-  samples <- list()
-  for (edge in igraph::E(graph)) {
-    u <- igraph::tail_of(graph, edge)
-    v <- igraph::head_of(graph, edge)
-    group_u <- igraph::V(graph)[u]$label
-    group_v <- igraph::V(graph)[v]$label
+    as.numeric(unique_groups == group)
+  }), unique_groups)
+  
+  num_edges <- nrow(edge_list)
+  encoding_dim <- length(unique_groups)
+  samples <- matrix(0, nrow = num_edges, ncol = encoding_dim)
 
-    # same group non-zero encoding
+  for (i in seq_len(num_edges)) {
+    u <- edge_list[i, 1]
+    v <- edge_list[i, 2]
+    group_u <- node_labels[u]
+    group_v <- node_labels[v]
+
     if (group_u == group_v) {
       encoding <- group_to_onehot[[group_u]]
-      
     } else {
-      encoding <- rep(0, length(unique_groups))
+      encoding <- rep(0, encoding_dim)
     }
     
     if (params$apply_gene_similarity) {
-      gene_similarity_weight <- edge_attr(graph, "gene_similarity_weight", edge)
-
-      if (is.null(gene_similarity_weight) || length(gene_similarity_weight) == 0) {
-      } else {
-      }
+      gene_similarity_weight <- gene_similarity_weights[i]
       encoding <- encoding * ifelse(is.na(gene_similarity_weight), 1.0, gene_similarity_weight)
     }
     
     if (params$apply_anomaly_severity_weight) {
       cat("Applying anomaly severity weight when building graphs.\n")
-      anomaly_severity_weight <- igraph::edge_attr(graph, "anomaly_severity_weight", edge)
-      cat("anomaly_severity_weight:", anomaly_severity_weight , "\n")
+      anomaly_severity_weight <- anomaly_severity_weights[i]
+      cat("anomaly_severity_weight:", anomaly_severity_weight, "\n")
       encoding <- encoding * ifelse(is.na(anomaly_severity_weight), 1.0, anomaly_severity_weight)
-      cat("encoding:", encoding , "\n")
+      cat("encoding:", encoding, "\n")
     }
-    samples <- append(samples, list(as.numeric(encoding)))
+    
+    samples[i, ] <- encoding
   }
-  # To a matrix: (number_of_edge) * (encoding_dim)
-  samples <- do.call(rbind, samples)
   return(samples)
 }
 
@@ -75,5 +75,6 @@ analyze_graph <- function(truth_graph, pred_graph , params) {
   samples_set_pred <- fit_kde_and_sample(samples_pred, num_samples, sample_times, bandwidth = 0.1, random_seed = 42)
   return(list(samples_set_truth = samples_set_truth, samples_set_pred = samples_set_pred))
 }
+
 
 
