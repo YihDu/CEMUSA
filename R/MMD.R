@@ -30,16 +30,29 @@ compute_kernel_matrix_multi_scale <- function(samples1, samples2, sigmas = c(0.1
 # MMD Computation
 # hBC 0.2
 # MERFISH 0.1
-# DLPFC 0.05 / c(0.05 , 0.1 ,0.5)
+# DLPFC 0.05
+# c(0.05 , 0.1 ,0.5)
 
 # general + simulate
-# c(0.05 , 0.1 ,0.5)
-compute_mmd_multi_scale_fixed <- function(samples1, samples2, sigmas = c(0.1), nproj = 50) {  
+# c(0.05 , 0.1 ,0.5) / c(0.2)
+
+# simulate 1 c(0.5)
+# simulate 2 c(0.1)
+# FP FN c(0.5)
+
+compute_mmd_multi_scale_fixed <- function(samples1, samples2, sigmas = c(0.05 , 0.1 ,0.5), nproj = 50) {  
   K_XX <- compute_kernel_matrix_multi_scale(samples1, samples1, sigmas)
   K_YY <- compute_kernel_matrix_multi_scale(samples2, samples2, sigmas)
   K_XY <- compute_kernel_matrix_multi_scale(samples1, samples2, sigmas)
+
+  # print Kernel matrix
+  cat("K_XX\n:", K_XX, "\n")
+  cat("K_YY\n:", K_YY, "\n")
+  cat("K_XY\n:", K_XY, "\n")
+
   m <- length(samples1)
   n <- length(samples2)
   mmd <- (sum(K_XX) / (m * m)) + (sum(K_YY) / (n * n)) - (2 * sum(K_XY) / (m * n))
   return(mmd)
 }
+

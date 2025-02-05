@@ -1,6 +1,8 @@
 # SAS: **S**patial **A**lignment **S**core
 
-`SAS` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
+# CEMUSA: **C**omprehensive **E**valuation **M**etric for **U**nsupervised **S**patial **A**nnotation
+
+`CEMUSA` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
 locations, and error severity simultaneously.
 
 ## Installation
@@ -9,13 +11,13 @@ locations, and error severity simultaneously.
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("YihDu/SAS")
+devtools::install_github("YihDu/CEMUSA")
 ```
 
 ### 2. Load the package
 ```r
-library(SAS)
+library(CEMUSA)
 ```
 
-## How to use `SAS`
-Please refer to the [documentation](https://yihdu.github.io/SGD/) for details.
+## How to use `CEMUSA`
+Please refer to the [documentation](https://yihdu.github.io/CEMUSA) for details.

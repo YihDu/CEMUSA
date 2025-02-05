@@ -52,7 +52,7 @@ fit_kde_and_sample <- function(samples, num_samples, sample_times, bandwidth = N
   samples_list <- vector("list", sample_times)
   for (i in seq_len(sample_times)) {
     sampled <- kde$sample(n_samples = as.integer(num_samples), random_state = as.integer(random_seed + i))
-    sampled <- np$clip(sampled, 0, 1)
+    # sampled <- np$clip(sampled, 0, 1)
     samples_list[[i]] <- py_to_r(sampled)
   }
   return(samples_list)

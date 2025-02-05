@@ -1,10 +1,10 @@
 ---
 title: "Doc"
-shorttitle: "SAS guide"
+shorttitle: "CEMUSA guide"
 author: 
   - Yihang Du, yih_du@163.com
   - Jiaying Hu
-package: SAS
+package: CEMUSA
 output: rmarkdown::html_document
 vignette: >
   %\VignetteIndexEntry{User Guide of SAS package}
@@ -14,7 +14,7 @@ vignette: >
 
 # Introduction
 
-`SAS` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
+`CEMUSA` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
 locations, and error severity simultaneously.
 
 ## Installation
@@ -26,17 +26,17 @@ To install the package from GitHub, use the following command:
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("YihDu/SAS")
+devtools::install_github("YihDu/CEMUSA")
 ```
 
-## Spatial Alignment Score (SAS)
+## CEMUSA
 
-SAS provides a unbiased clustering evaluation metric for spatial transcriptomics data. 
+CEMUSA provides a unbiased clustering evaluation metric for spatial transcriptomics data. 
 It accounts for the label agreement between the clustering results and the ground truth, spatial label distribution, and the mislabel severity simultaneously.
 
 ```r
-library(SAS)
-SAS(true_labels, cluster_labels, spatial_coordinates)
+library(CEMUSA)
+CEMUSA(true_labels, cluster_labels, spatial_coordinates)
 ```
 
 ## Parameters
