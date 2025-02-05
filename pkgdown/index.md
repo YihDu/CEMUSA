@@ -1,12 +1,12 @@
 ---
 title: "Documentation"
-description: "User Guide of SAS package"
+description: "User Guide of CEMUSA package"
 template: home
 ---
 
 ## Introduction
 
-`SAS` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
+`CEMUSA` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
 locations, and error severity simultaneously.
 
 ## Installation
@@ -18,13 +18,13 @@ To install the package from GitHub, use the following command:
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("YihDu/SAS")
+devtools::install_github("YihDu/CEMUSA")
 ```
 
-## Spatial Alignment Score (SAS)
+## CEMUSA
 
 ```r
-library(SAS)
+library(CEMUSA)
 SAS(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels = TRUE , params = list)
 ```
 
@@ -48,7 +48,7 @@ SAS(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels = TR
   A MMD-based (maximum mean discrepancy) score, ranging from 0 to 2, where smaller values indicate better alignment.
 
 ## Example Usage
-Click [here](https://github.com/YihDu/SAS/tree/main/data-raw) to download the data used in the example below.
+Click [here](https://github.com/YihDu/CEMUSA/tree/main/data-raw) to download the data used in the example below.
 
 ### Example 1: Basic Usage
 ```r
@@ -60,7 +60,7 @@ coordinates <- metadata[, c("spatial_x", "spatial_y")]
 truth_labels <- metadata$truth_label
 pred_labels_edge <- metadata$edge_error
 
-SAS = SAS(true_labels = truth_labels, 
+CEMUSA = CEMUSA(true_labels = truth_labels, 
            cluster_labels = pred1_labels , 
            spatial_coordinates = coordinates , 
            match_cluster_labels = FALSE)
@@ -85,15 +85,15 @@ params <-list(
   severity_weight_dict = dict_severity_levels1
 )
 
-SAS = SAS(
+CEMUSA = CEMUSA(
   true_labels = truth_labels , 
   cluster_labels = pred_labels_FP , 
   spatial_coordinates = coordinates,
   params = params)
 ```
 
-## Cite `SAS`
-Jiaying Hu<sup>†</sup>, Yihang Du<sup>†</sup>, Suyang Hou, Yueyang Ding, Hao Wu and Xiaobo Sun&#35;.*SAS:A clustering evaluation metric for spatial transcriptomics.*,2024
+<!-- ## Cite `CEMUSA`
+Jiaying Hu<sup>†</sup>, Yihang Du<sup>†</sup>, Suyang Hou, Yueyang Ding, Hao Wu and Xiaobo Sun<sup>†</sup>&#35;.*SAS:A clustering evaluation metric for spatial transcriptomics.*,2025 -->
 
 
 

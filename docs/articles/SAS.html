@@ -101,10 +101,10 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p><code>SAS</code> is a evaluation metric for Spatial Transcriptomics
-data. It addresses the limitations of existing clustering evaluation
-metrics by accounting for label agreement, spatial locations, and error
-severity simultaneously.</p>
+<p><code>CEMUSA</code> is a evaluation metric for Spatial
+Transcriptomics data. It addresses the limitations of existing
+clustering evaluation metrics by accounting for label agreement, spatial
+locations, and error severity simultaneously.</p>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
@@ -114,18 +114,18 @@ severity simultaneously.</p>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"YihDu/SAS"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"YihDu/CEMUSA"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="spatial-alignment-score-sas">Spatial Alignment Score (SAS)<a class="anchor" aria-label="anchor" href="#spatial-alignment-score-sas"></a>
+<h3 id="cemusa">CEMUSA<a class="anchor" aria-label="anchor" href="#cemusa"></a>
 </h3>
-<p>SAS provides a unbiased clustering evaluation metric for spatial
+<p>CEMUSA provides a unbiased clustering evaluation metric for spatial
 transcriptomics data. It accounts for the label agreement between the
 clustering results and the ground truth, spatial label distribution, and
 the mislabel severity simultaneously.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihdu.github.io/SAS">SAS</a></span><span class="op">)</span></span>
-<span><span class="fu">SAS</span><span class="op">(</span><span class="va">true_labels</span>, <span class="va">cluster_labels</span>, <span class="va">spatial_coordinates</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">CEMUSA</span><span class="op">)</span></span>
+<span><span class="fu">CEMUSA</span><span class="op">(</span><span class="va">true_labels</span>, <span class="va">cluster_labels</span>, <span class="va">spatial_coordinates</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a>

@@ -1,4 +1,4 @@
-Package: SAS
+Package: CEMUSA
 Title: A clustering evaluation metric for spatial transcriptomics
 Version: 1.1.0
 Authors@R: 
@@ -14,7 +14,7 @@ Imports:
     clue
 License: GPL-3
 Encoding: UTF-8
-URL: https://yihdu.github.io/SAS
-BugReports: https://github.com/YihDu/SAS/issues
+URL: https://yihdu.github.io/CEMUSA
+BugReports: https://github.com/YihDu/CEMUSA/issues
 
 
