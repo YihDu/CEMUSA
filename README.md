@@ -1,5 +1,3 @@
-# SAS: **S**patial **A**lignment **S**core
-
 # CEMUSA: **C**omprehensive **E**valuation **M**etric for **U**nsupervised **S**patial **A**nnotation
 
 `CEMUSA` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
