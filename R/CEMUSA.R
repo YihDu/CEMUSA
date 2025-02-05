@@ -1,8 +1,8 @@
 ############################################
-##        Spatial Alignment Score         ##
+##        CEMUSA                          ##
 ############################################
 
-SAS <- function(
+CEMUSA <- function(
   true_labels , 
   cluster_labels , 
   spatial_coordinates,
@@ -25,7 +25,7 @@ SAS <- function(
   params <- modifyList(default_params, params)
   
   # using match function
-  # cluster_labels <- matching_function(true_labels , cluster_labels)
+  cluster_labels <- matching_function(true_labels , cluster_labels)
 
   graph_list <- process_graph(true_labels, cluster_labels, spatial_coordinates , params)
   result <- analyze_graph(graph_list$truth_graph, graph_list$pred_graph , params) 
@@ -33,7 +33,7 @@ SAS <- function(
   registerDoParallel(cl)  
   mmd_value <- compute_mmd_multi_scale_fixed(result$samples_set_truth, result$samples_set_pred)
   stopCluster(cl)
-  cat("MMD Value: ", mmd_value, "\n")
+  cat("CEMUSA Value: ", mmd_value, "\n")
   cat('-----------------------------------------------------------------\n')
   return(mmd_value)
 }

@@ -7,7 +7,7 @@ author:
 package: CEMUSA
 output: rmarkdown::html_document
 vignette: >
-  %\VignetteIndexEntry{User Guide of SAS package}
+  %\VignetteIndexEntry{User Guide of CEMUSA package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -25,7 +25,7 @@ devtools::install_github("YihDu/CEMUSA")
 
 ```r
 library(CEMUSA)
-SAS(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels = TRUE , params = list)
+CEMUSA(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels = TRUE , params = list)
 ```
 
 ## Parameters

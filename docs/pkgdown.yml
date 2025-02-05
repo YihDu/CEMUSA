@@ -2,8 +2,8 @@ pandoc: 3.1.2
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  SAS: SAS.html
-last_built: 2025-02-05T12:43Z
+  CEMUSA: CEMUSA.html
+last_built: 2025-02-05T12:55Z
 urls:
-  reference: https://yihdu.github.io/SAS/reference
-  article: https://yihdu.github.io/SAS/articles
+  reference: https://yihdu.github.io/CEMUSA/reference
+  article: https://yihdu.github.io/CEMUSA/articles
