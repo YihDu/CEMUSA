@@ -55,22 +55,32 @@ Click [here](https://github.com/YihDu/CEMUSA/tree/main/data-raw) to download the
 ### Example 1: Basic Usage
 ```r
 # Reproduce the Case I in the paper
-load('Simulate_Case_CenterEdge.RData')
+library(readxl)
 
-metadata <- seurat_object@meta.data
-coordinates <- metadata[, c("spatial_x", "spatial_y")]
-truth_labels <- metadata$truth_label
-pred_labels_edge <- metadata$edge_error
+data <- read_excel("Simulate_Case_Basic.xlsx")
 
-CEMUSA = CEMUSA(true_labels = truth_labels, 
-           cluster_labels = pred1_labels , 
-           spatial_coordinates = coordinates , 
-           match_cluster_labels = FALSE)
+coordinates <- data[, c("array_row", "array_col")]
+truth_labels <- data$`Ground_truth`
+pred_labels_R1 <- data$Result1
+pred_labels_R2 <- data$Result2
+
+# less severe
+CEMUSA_Score1 = SAS(
+  true_labels = truth_labels, 
+  cluster_labels = pred_labels_R1 , 
+  spatial_coordinates = coordinates)
+
+# more severe
+CEMUSA_Score2 = SAS(
+  true_labels = truth_labels, 
+  cluster_labels = pred_labels_R2 , 
+  spatial_coordinates = coordinates)
+
 ```
 
 ### Example 2: When considering the Error Severity
 ```r
-# Reproduce the Case II in the paper
+# Reproduce the Case III(false positives VS. false negatives) in the paper
 data <- read.csv('Simulate_Case_Severity.csv')
 
 dict_severity_levels1 <- list(

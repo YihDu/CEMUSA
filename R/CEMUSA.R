@@ -1,5 +1,5 @@
 ############################################
-##        CEMUSA                          ##
+##                CEMUSA                  ##
 ############################################
 
 CEMUSA <- function(
@@ -25,7 +25,7 @@ CEMUSA <- function(
   params <- modifyList(default_params, params)
   
   # using match function
-  cluster_labels <- matching_function(true_labels , cluster_labels)
+  cluster_labels <- assign_clusters(true_labels , cluster_labels)
 
   graph_list <- process_graph(true_labels, cluster_labels, spatial_coordinates , params)
   result <- analyze_graph(graph_list$truth_graph, graph_list$pred_graph , params) 
