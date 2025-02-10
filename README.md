@@ -1,5 +1,7 @@
 # CEMUSA: **C**omprehensive **E**valuation **M**etric for **U**nsupervised **S**patial **A**nnotation
 
+<img src="img/logo.png" width="200" align="right" />
+
 `CEMUSA` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
 locations, and error severity simultaneously.
 
