@@ -1,5 +1,3 @@
-library(clue)
-
 jaccard_coefficient <- function(cluster1, cluster2) {
   intersection <- length(intersect(cluster1, cluster2)) 
   union <- length(unique(c(cluster1, cluster2)))  
@@ -19,7 +17,6 @@ match_clusters <- function(predicted_clusters, true_clusters) {
     Vectorize(function(i, j) jaccard_coefficient(predicted_clusters[[i]], true_clusters[[j]]))
   )
   
-  cat("Jaccard 系数矩阵：\n")
   print(jaccard_matrix)
 
   cost_matrix <- 1 - jaccard_matrix
@@ -47,9 +44,7 @@ reassign_labels <- function(pred_labels, matching, pred_clusters, true_keys) {
 
 assign_clusters <- function(pred_clusters, true_clusters, pred_labels, true_keys, point_coordinates) {
   matching <- match_clusters(pred_clusters, true_clusters)
-  
-  cat("匹配结果：\n")
-  print(matching)
+  # print(matching)
 
   return(reassign_labels(pred_labels, matching, pred_clusters, true_keys))
 }

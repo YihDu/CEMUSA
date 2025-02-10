@@ -27,7 +27,7 @@ devtools::install_github("YihDu/CEMUSA")
 
 ```r
 library(CEMUSA)
-CEMUSA(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels = TRUE , params = list)
+CEMUSA(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels, params = list)
 ```
 
 ## Parameters
@@ -46,7 +46,7 @@ CEMUSA(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels =
 - `params` : (optional)   
   A list of additional parameters that control more detailed aspects of the evaluation.
 
-## Returns:
+## Return:
   A MMD-based (maximum mean discrepancy) score, ranging from 0 to 2, where smaller values indicate better alignment.
 
 ## Example Usage
@@ -107,7 +107,7 @@ CEMUSA_FN = CEMUSA(
   true_labels = truth_labels , 
   cluster_labels = pred_labels_FN , 
   spatial_coordinates = coordinates , 
-  params = params2)
+  params = params)
 ```
 
 <!-- ## Cite `CEMUSA`

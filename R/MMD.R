@@ -27,15 +27,6 @@ compute_kernel_matrix_multi_scale <- function(samples1, samples2, sigmas = c(0.1
   return(K)
 }
 
-# MMD Computation
-
-# simulate 1 c(0.5)
-# simulate 2 c(0.1)
-# FP FN      c(0.5)
-
-# hBC        0.2
-# MERFISH    0.1
-# DLPFC      0.05
 
 
 

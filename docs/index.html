@@ -109,14 +109,14 @@
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"YihDu/CEMUSA"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"YihDu/CEMUSA"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="cemusa">CEMUSA<a class="anchor" aria-label="anchor" href="#cemusa"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yihdu.github.io/CEMUSA">CEMUSA</a></span><span class="op">)</span></span>
-<span><span class="fu">CEMUSA</span><span class="op">(</span><span class="va">true_labels</span>, <span class="va">cluster_labels</span>, <span class="va">spatial_coordinates</span> , match_cluster_labels <span class="op">=</span> <span class="cn">TRUE</span> , params <span class="op">=</span> <span class="va">list</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">CEMUSA</span><span class="op">(</span><span class="va">true_labels</span>, <span class="va">cluster_labels</span>, <span class="va">spatial_coordinates</span> , <span class="va">match_cluster_labels</span>, params <span class="op">=</span> <span class="va">list</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a>
@@ -128,14 +128,14 @@ A vector containing the ground truth labels, used as a reference.</p></li>
 A vector containing the cluster labels to be evaluated.</p></li>
 <li><p><code>spatial_coordinates</code> :<br>
 A matrix or data frame containing the spatial coordinates (e.g., <code>x</code>, <code>y</code>) of each data point.</p></li>
-<li><p><code>match_cluster_labels</code> : (default = <code>TRUE</code>)<br>
-A boolean value..If <code>TRUE</code>, the function will attempt to match the <code>cluster_labels</code> with the <code>true_labels</code> using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).</p></li>
+<li><p><code>match_cluster_labels</code> : (default = <code>False</code>)<br>
+A boolean value. If <code>TRUE</code>, the function will attempt to match the <code>cluster_labels</code> with the <code>true_labels</code> using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).</p></li>
 <li><p><code>params</code> : (optional)<br>
 A list of additional parameters that control more detailed aspects of the evaluation.</p></li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="returns">Returns:<a class="anchor" aria-label="anchor" href="#returns"></a>
+<h2 id="return">Return:<a class="anchor" aria-label="anchor" href="#return"></a>
 </h2>
 <p>A MMD-based (maximum mean discrepancy) score, ranging from 0 to 2, where smaller values indicate better alignment.</p>
 </div>
@@ -150,21 +150,20 @@ A list of additional parameters that control more detailed aspects of the evalua
 <code class="sourceCode R"><span><span class="co"># Reproduce the Case I in the paper</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org" class="external-link">readxl</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="st">"Simulate_Case_Basic.xlsx"</span><span class="op">)</span></span>
-<span></span>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/readxl/man/read_excel.html" class="external-link">read_excel</a></span><span class="op">(</span><span class="st">"Simulate_Case_Basic.xlsx"</span><span class="op">)</span></span>
 <span><span class="va">coordinates</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"array_row"</span>, <span class="st">"array_col"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">truth_labels</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">`Ground_truth`</span></span>
 <span><span class="va">pred_labels_R1</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">Result1</span></span>
 <span><span class="va">pred_labels_R2</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">Result2</span></span>
 <span></span>
 <span><span class="co"># less severe</span></span>
-<span><span class="va">CEMUSA_Score1</span> <span class="op">=</span> <span class="fu">SAS</span><span class="op">(</span></span>
+<span><span class="va">CEMUSA_Score1</span> <span class="op">=</span> <span class="fu">CEMUSA</span><span class="op">(</span></span>
 <span>  true_labels <span class="op">=</span> <span class="va">truth_labels</span>, </span>
 <span>  cluster_labels <span class="op">=</span> <span class="va">pred_labels_R1</span> , </span>
 <span>  spatial_coordinates <span class="op">=</span> <span class="va">coordinates</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># more severe</span></span>
-<span><span class="va">CEMUSA_Score2</span> <span class="op">=</span> <span class="fu">SAS</span><span class="op">(</span></span>
+<span><span class="va">CEMUSA_Score2</span> <span class="op">=</span> <span class="fu">CEMUSA</span><span class="op">(</span></span>
 <span>  true_labels <span class="op">=</span> <span class="va">truth_labels</span>, </span>
 <span>  cluster_labels <span class="op">=</span> <span class="va">pred_labels_R2</span> , </span>
 <span>  spatial_coordinates <span class="op">=</span> <span class="va">coordinates</span><span class="op">)</span></span></code></pre></div>
@@ -183,6 +182,7 @@ A list of additional parameters that control more detailed aspects of the evalua
 <span></span>
 <span><span class="va">truth_labels</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">truth_label</span></span>
 <span><span class="va">pred_labels_FP</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">FP_error</span></span>
+<span><span class="va">pred_labels_FN</span> <span class="op">=</span> <span class="va">data</span><span class="op">$</span><span class="va">FN_error</span></span>
 <span><span class="va">coordinates</span> <span class="op">=</span> <span class="va">data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">params</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -190,10 +190,16 @@ A list of additional parameters that control more detailed aspects of the evalua
 <span>  severity_weight_dict <span class="op">=</span> <span class="va">dict_severity_levels1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">CEMUSA</span> <span class="op">=</span> <span class="fu">CEMUSA</span><span class="op">(</span></span>
+<span><span class="va">CEMUSA_FP</span> <span class="op">=</span> <span class="fu">CEMUSA</span><span class="op">(</span></span>
 <span>  true_labels <span class="op">=</span> <span class="va">truth_labels</span> , </span>
 <span>  cluster_labels <span class="op">=</span> <span class="va">pred_labels_FP</span> , </span>
 <span>  spatial_coordinates <span class="op">=</span> <span class="va">coordinates</span>,</span>
+<span>  params <span class="op">=</span> <span class="va">params</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">CEMUSA_FN</span> <span class="op">=</span> <span class="fu">CEMUSA</span><span class="op">(</span></span>
+<span>  true_labels <span class="op">=</span> <span class="va">truth_labels</span> , </span>
+<span>  cluster_labels <span class="op">=</span> <span class="va">pred_labels_FN</span> , </span>
+<span>  spatial_coordinates <span class="op">=</span> <span class="va">coordinates</span> , </span>
 <span>  params <span class="op">=</span> <span class="va">params</span><span class="op">)</span></span></code></pre></div>
 <!-- ## Cite `CEMUSA`
 Jiaying Hu<sup>†</sup>, Yihang Du<sup>†</sup>, Suyang Hou, Yueyang Ding, Hao Wu and Xiaobo Sun<sup>†</sup>&#35;.*SAS:A clustering evaluation metric for spatial transcriptomics.*,2025 -->
