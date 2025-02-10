@@ -4,7 +4,7 @@ description: "User Guide of CEMUSA package"
 template: home
 ---
 
-# CEMUSA <img src="../img/logo.png" width="180" align="right" />
+# CEMUSA <img src="https://github.com/YihDu/CEMUSA/tree/main/img" width="180" align="right" />
 
 ## Introduction
 
