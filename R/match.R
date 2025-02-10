@@ -148,7 +148,7 @@ assign_clusters <- function(pred_clusters, true_clusters, pred_labels, true_keys
   }
   
   # 返回调整后的预测标签
-  return(reassign_labels(pred_labels, matching, pred_clusters, true_keys))
+  # return(reassign_labels(pred_labels, matching, pred_clusters, true_keys))
 }
 
 # 匹配函数：将预测标签与真实标签进行匹配
