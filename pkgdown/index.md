@@ -4,6 +4,8 @@ description: "User Guide of CEMUSA package"
 template: home
 ---
 
+# CEMUSA <img src="img/logo.png" width="180" align="right" />
+
 ## Introduction
 
 `CEMUSA` is a evaluation metric for Spatial Transcriptomics data. It addresses the limitations of existing clustering evaluation metrics by accounting for label agreement, spatial
