@@ -12,6 +12,8 @@ get_edge_attributes <- function(graph, unique_groups, params) {
   encoding_dim <- length(unique_groups)
   samples <- matrix(0, nrow = num_edges, ncol = encoding_dim)
 
+
+
   for (i in seq_len(num_edges)) {
     u <- edge_list[i, 1]
     v <- edge_list[i, 2]
@@ -30,11 +32,11 @@ get_edge_attributes <- function(graph, unique_groups, params) {
     }
     
     if (params$apply_anomaly_severity_weight) {
-      cat("Applying anomaly severity weight when building graphs.\n")
+      # cat("Applying anomaly severity weight when building graphs.\n")
       anomaly_severity_weight <- anomaly_severity_weights[i]
-      cat("anomaly_severity_weight:", anomaly_severity_weight, "\n")
+      # cat("anomaly_severity_weight:", anomaly_severity_weight, "\n")
       encoding <- encoding * ifelse(is.na(anomaly_severity_weight), 1.0, anomaly_severity_weight)
-      cat("encoding:", encoding, "\n")
+      # cat("encoding:", encoding, "\n")
     }
     
     samples[i, ] <- encoding

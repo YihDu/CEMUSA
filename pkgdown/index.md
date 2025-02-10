@@ -40,8 +40,8 @@ CEMUSA(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels =
 - `spatial_coordinates` :   
   A matrix or data frame containing the spatial coordinates (e.g., `x`, `y`) of each data point.
 
-- `match_cluster_labels` : (default =  `TRUE`)    
-  A boolean value..If `TRUE`, the function  will attempt to match the `cluster_labels` with the `true_labels` using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).
+- `match_cluster_labels` : (default =  `False`)    
+  A boolean value. If `TRUE`, the function  will attempt to match the `cluster_labels` with the `true_labels` using an internal matching function. This is useful when the labels are not already matched (e.g., matched by external information like marker genes).
 
 - `params` : (optional)   
   A list of additional parameters that control more detailed aspects of the evaluation.
@@ -58,20 +58,19 @@ Click [here](https://github.com/YihDu/CEMUSA/tree/main/data-raw) to download the
 library(readxl)
 
 data <- read_excel("Simulate_Case_Basic.xlsx")
-
 coordinates <- data[, c("array_row", "array_col")]
 truth_labels <- data$`Ground_truth`
 pred_labels_R1 <- data$Result1
 pred_labels_R2 <- data$Result2
 
 # less severe
-CEMUSA_Score1 = SAS(
+CEMUSA_Score1 = CEMUSA(
   true_labels = truth_labels, 
   cluster_labels = pred_labels_R1 , 
   spatial_coordinates = coordinates)
 
 # more severe
-CEMUSA_Score2 = SAS(
+CEMUSA_Score2 = CEMUSA(
   true_labels = truth_labels, 
   cluster_labels = pred_labels_R2 , 
   spatial_coordinates = coordinates)
@@ -90,6 +89,7 @@ dict_severity_levels1 <- list(
 
 truth_labels = data$truth_label
 pred_labels_FP = data$FP_error
+pred_labels_FN = data$FN_error
 coordinates = data[, c("x", "y")]
 
 params <-list(
@@ -97,11 +97,17 @@ params <-list(
   severity_weight_dict = dict_severity_levels1
 )
 
-CEMUSA = CEMUSA(
+CEMUSA_FP = CEMUSA(
   true_labels = truth_labels , 
   cluster_labels = pred_labels_FP , 
   spatial_coordinates = coordinates,
   params = params)
+
+CEMUSA_FN = CEMUSA(
+  true_labels = truth_labels , 
+  cluster_labels = pred_labels_FN , 
+  spatial_coordinates = coordinates , 
+  params = params2)
 ```
 
 <!-- ## Cite `CEMUSA`
