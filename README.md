@@ -17,6 +17,7 @@ devtools::install_github("YihDu/CEMUSA")
 ```r
 library(CEMUSA)
 ```
+It may take more time when first loading the package.
 
 ## How to use `CEMUSA`
 Please refer to the [documentation](https://yihdu.github.io/CEMUSA) for details.
