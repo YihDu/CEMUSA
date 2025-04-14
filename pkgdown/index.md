@@ -52,6 +52,8 @@ CEMUSA(true_labels, cluster_labels, spatial_coordinates , match_cluster_labels, 
 ## Example Usage
 Click [here](https://github.com/YihDu/CEMUSA/tree/main/data-raw) to download the data used in the example below.
 
+**Attention**: It may take longer the first time you use this function.
+
 ### Example 1: Basic Usage
 ```r
 # Reproduce the Case I in the paper
